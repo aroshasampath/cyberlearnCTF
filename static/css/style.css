@@ -1,0 +1,777 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #07111f;
+    color: #f5f7fb;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+.navbar {
+    min-height: 72px;
+    padding: 0 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0c1727;
+    border-bottom: 1px solid #243a56;
+}
+
+.logo {
+    color: #71e6b0;
+    font-size: 21px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.nav-links a {
+    color: #dce7f5;
+    text-decoration: none;
+}
+
+.nav-user {
+    color: #8fb8ff;
+    font-size: 14px;
+}
+
+.logout-form {
+    display: inline;
+}
+
+.logout-form button {
+    border: none;
+    background: transparent;
+    color: #dce7f5;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.messages {
+    width: 90%;
+    max-width: 720px;
+    margin: 20px auto;
+}
+
+.message {
+    padding: 13px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.message.success {
+    background: #173c2a;
+    border: 1px solid #2f6849;
+}
+
+.message.error {
+    background: #4a1d24;
+    border: 1px solid #74303a;
+}
+
+.tag {
+    color: #71e6b0;
+    letter-spacing: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.hero {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.hero h1 {
+    font-size: 65px;
+    margin-top: 15px;
+}
+
+.hero h2 {
+    margin-top: 8px;
+    font-weight: normal;
+    color: #b0bfd1;
+}
+
+.hero > p:not(.tag) {
+    max-width: 650px;
+    margin-top: 25px;
+    color: #9eb0c6;
+    line-height: 1.7;
+}
+
+.buttons {
+    margin-top: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #71e6b0;
+    color: #052117;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn.secondary {
+    margin-left: 8px;
+    background: transparent;
+    color: white;
+    border: 1px solid #3a536f;
+}
+
+.btn.small {
+    padding: 9px 13px;
+    font-size: 13px;
+}
+
+.btn.disabled {
+    background: #243346;
+    color: #77899e;
+    cursor: not-allowed;
+}
+
+.full {
+    width: 100%;
+    margin-top: 25px;
+}
+
+.domains {
+    padding: 50px 8% 80px;
+    text-align: center;
+}
+
+.domain-grid {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.domain-grid div {
+    padding: 28px;
+    background: #101d30;
+    border: 1px solid #263c57;
+    border-radius: 12px;
+}
+
+.form-container {
+    min-height: 80vh;
+    display: grid;
+    place-items: center;
+    padding: 40px 20px;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 450px;
+    background: #101d30;
+    border: 1px solid #263c57;
+    border-radius: 14px;
+    padding: 35px;
+}
+
+.form-card h1 {
+    margin: 8px 0 25px;
+}
+
+.form-card label {
+    display: block;
+    margin: 15px 0 7px;
+}
+
+.form-card input:not([type="submit"]) {
+    width: 100%;
+    padding: 12px;
+    color: white;
+    background: #07111f;
+    border: 1px solid #354d69;
+    border-radius: 7px;
+}
+
+.field-error {
+    margin-top: 6px;
+    color: #ff8c99;
+    font-size: 13px;
+}
+
+.dashboard {
+    padding: 60px 8% 90px;
+}
+
+.dashboard-heading {
+    display: grid;
+    grid-template-columns: 1fr 330px;
+    gap: 35px;
+    align-items: end;
+}
+
+.dashboard-heading h1 {
+    margin-top: 8px;
+    font-size: 48px;
+}
+
+.dashboard-heading > div:first-child > p:last-child {
+    margin-top: 10px;
+    color: #9eb0c6;
+}
+
+.progress-card {
+    background: #101d30;
+    border: 1px solid #263c57;
+    border-radius: 12px;
+    padding: 20px;
+    display: grid;
+    gap: 10px;
+}
+
+progress {
+    width: 100%;
+    height: 14px;
+    accent-color: #71e6b0;
+}
+
+.challenge-grid {
+    margin-top: 38px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.challenge-card {
+    min-height: 310px;
+    padding: 23px;
+    display: flex;
+    flex-direction: column;
+    background: #101d30;
+    border: 1px solid #263c57;
+    border-radius: 14px;
+}
+
+.challenge-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stage {
+    color: #71e6b0;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.status {
+    padding: 5px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+}
+
+.status.completed {
+    color: #71e6b0;
+    border: 1px solid #2f6849;
+}
+
+.status.unlocked {
+    color: #8fb8ff;
+    border: 1px solid #395d88;
+}
+
+.status.locked {
+    color: #8495a9;
+    border: 1px solid #3a4655;
+}
+
+.challenge-card h2 {
+    margin-top: 23px;
+}
+
+.domain {
+    margin-top: 8px;
+    color: #8fb8ff;
+}
+
+.objective {
+    margin-top: 15px;
+    color: #9eb0c6;
+    line-height: 1.6;
+}
+
+.challenge-bottom {
+    margin-top: auto;
+    padding-top: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.difficulty {
+    color: #f2c66d;
+    font-size: 13px;
+}
+
+.completed-card {
+    border-color: #2f6849;
+}
+
+.locked-card {
+    opacity: 0.58;
+}
+
+.challenge-page {
+    width: 90%;
+    max-width: 900px;
+    margin: auto;
+    padding: 55px 0 90px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 30px;
+    color: #9eb0c6;
+    text-decoration: none;
+}
+
+.challenge-page > h1 {
+    margin-top: 8px;
+    font-size: 50px;
+}
+
+.meta {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.meta span {
+    padding: 7px 11px;
+    border: 1px solid #314863;
+    border-radius: 20px;
+    color: #a8b7ca;
+    font-size: 13px;
+}
+
+.mission-card,
+.material-card,
+.flag-card,
+.completed-panel {
+    margin-top: 25px;
+    padding: 28px;
+    background: #101d30;
+    border: 1px solid #263c57;
+    border-radius: 14px;
+}
+
+.mission-card h2,
+.material-card h2,
+.flag-card h2 {
+    margin-top: 7px;
+}
+
+.mission-card > p:last-of-type,
+.material-card > p:last-child,
+.flag-card > p:last-of-type {
+    margin-top: 12px;
+    color: #9eb0c6;
+    line-height: 1.7;
+}
+
+.learning-box {
+    margin-top: 20px;
+    padding: 16px;
+    background: #0b1728;
+    border: 1px solid #263c57;
+    border-radius: 9px;
+}
+
+.learning-box p {
+    margin-top: 6px;
+    color: #9eb0c6;
+}
+
+.flag-form {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+}
+
+.flag-form input {
+    width: 100%;
+    padding: 12px;
+    color: white;
+    background: #07111f;
+    border: 1px solid #354d69;
+    border-radius: 8px;
+}
+
+.completed-panel {
+    border-color: #2f6849;
+}
+
+.completed-panel h2 {
+    color: #71e6b0;
+}
+
+.completed-panel p {
+    margin-top: 8px;
+    color: #9eb0c6;
+}
+
+code {
+    color: #71e6b0;
+}
+
+.error-page {
+    min-height: 75vh;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    text-align: center;
+    padding: 40px;
+}
+
+.error-code {
+    color: #71e6b0;
+    font-size: 70px;
+    font-weight: bold;
+}
+
+.error-page h1 {
+    margin-top: 10px;
+}
+
+.error-page > p:not(.error-code) {
+    margin: 12px 0 25px;
+    color: #9eb0c6;
+}
+
+footer {
+    padding: 25px;
+    text-align: center;
+    border-top: 1px solid #1c2d42;
+    color: #718399;
+    font-size: 13px;
+}
+
+@media (max-width: 950px) {
+
+    .challenge-grid,
+    .domain-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-heading {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .navbar {
+        padding: 15px 5%;
+    }
+
+    .nav-user {
+        display: none;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
+    .hero h1 {
+        font-size: 43px;
+    }
+
+    .flag-form {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.hint-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #263c57;
+}
+
+.hint-section h3 {
+    margin-bottom: 15px;
+}
+
+.hint-section details {
+    margin-top: 10px;
+    padding: 12px 15px;
+    background: #07111f;
+    border: 1px solid #354d69;
+    border-radius: 8px;
+}
+
+.hint-section summary {
+    cursor: pointer;
+    font-weight: bold;
+    color: #71e6b0;
+}
+
+.hint-section details p {
+    margin-top: 10px;
+    color: #9eb0c6;
+    line-height: 1.6;
+}
+
+/* ==================================================
+   STAGE 02 - THE BROKEN GATE
+   ================================================== */
+
+.stage02-page {
+    width: 90%;
+    max-width: 900px;
+    margin: auto;
+    padding: 55px 0 90px;
+}
+
+
+.gate-header {
+    margin-bottom: 30px;
+}
+
+
+.gate-header h1 {
+    margin-top: 8px;
+    font-size: 52px;
+}
+
+
+.gate-header > p:last-child {
+    margin-top: 12px;
+    color: #9eb0c6;
+    line-height: 1.6;
+}
+
+
+/* TERMINAL */
+
+.gate-terminal {
+    overflow: hidden;
+    background: #050b13;
+    border: 1px solid #2d435d;
+    border-radius: 14px;
+}
+
+
+.terminal-bar {
+    padding: 13px 18px;
+
+    display: flex;
+    justify-content: space-between;
+
+    background: #101d30;
+
+    border-bottom: 1px solid #263c57;
+
+    color: #9eb0c6;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+}
+
+
+.terminal-content {
+    padding: 30px;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+}
+
+
+.terminal-line {
+    margin-bottom: 10px;
+
+    color: #71e6b0;
+}
+
+
+.terminal-warning {
+    margin-top: 15px;
+    margin-bottom: 25px;
+
+    color: #f2c66d;
+}
+
+
+/* ACCESS FORM */
+
+.gate-form {
+    margin-top: 25px;
+
+    display: grid;
+
+    gap: 12px;
+}
+
+
+.gate-form label {
+    color: #a8b7ca;
+}
+
+
+.gate-form input {
+    width: 100%;
+
+    padding: 13px;
+
+    background: #07111f;
+
+    color: #ffffff;
+
+    border: 1px solid #354d69;
+
+    border-radius: 8px;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+}
+
+
+.gate-form input:focus {
+    outline: 1px solid #71e6b0;
+}
+
+
+.gate-form .btn {
+    width: fit-content;
+}
+
+
+/* RESULT MESSAGE */
+
+.gate-message {
+    min-height: 22px;
+
+    margin-top: 20px;
+
+    font-weight: bold;
+}
+
+
+.gate-success {
+    color: #71e6b0;
+}
+
+
+.gate-error {
+    color: #ff8c99;
+}
+
+
+/* RESTRICTED CONTENT */
+
+.restricted-resource {
+    margin-top: 25px;
+
+    padding: 22px;
+
+    background: #101d30;
+
+    border: 1px solid #2f6849;
+
+    border-radius: 10px;
+}
+
+
+.restricted-resource h2 {
+    margin-top: 7px;
+}
+
+
+.restricted-resource > p {
+    margin-top: 10px;
+
+    color: #9eb0c6;
+
+    line-height: 1.6;
+}
+
+
+.stage02-flag-box {
+    margin-top: 20px;
+
+    padding: 16px;
+
+    display: grid;
+
+    gap: 8px;
+
+    background: #07111f;
+
+    border: 1px solid #354d69;
+
+    border-radius: 8px;
+}
+
+
+.stage02-flag-box span {
+    color: #9eb0c6;
+
+    font-size: 12px;
+}
+
+
+.stage02-flag-box code {
+    color: #71e6b0;
+
+    font-size: 17px;
+
+    word-break: break-all;
+}
+
+
+/* INVESTIGATION NOTE */
+
+.investigation-note {
+    margin-top: 25px;
+
+    padding: 20px;
+
+    background: #101d30;
+
+    border-left: 3px solid #71e6b0;
+
+    border-radius: 8px;
+}
+
+
+.investigation-note p {
+    margin-top: 8px;
+
+    color: #9eb0c6;
+
+    line-height: 1.6;
+}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}
+CyberLearn CTF
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <p class="tag">
+        GROUP 18 PRESENTS
+    </p>
+
+    <h1>
+        CyberLearn CTF
+    </h1>
+
+    <h2>
+        Group 18 Security Quest
+    </h2>
+
+    <p>
+        Learn practical cybersecurity through a
+        progressive six-stage Capture The Flag
+        investigation.
+    </p>
+
+    <div class="buttons">
+
+        {% if session.get('user_id') %}
+
+            <a
+                class="btn"
+                href="{{ url_for('dashboard') }}"
+            >
+                Continue Quest
+            </a>
+
+        {% else %}
+
+            <a
+                class="btn"
+                href="{{ url_for('register') }}"
+            >
+                Start Your Quest
+            </a>
+
+            <a
+                class="btn secondary"
+                href="{{ url_for('login') }}"
+            >
+                Login
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<section class="domains">
+
+    <h2>
+        Six Security Domains
+    </h2>
+
+    <div class="domain-grid">
+
+        <div>Steganography</div>
+        <div>Web Security</div>
+        <div>Cryptography</div>
+        <div>Digital Forensics</div>
+        <div>Networking</div>
+        <div>Linux / System Security</div>
+
+    </div>
+
+</section>
+
+{% endblock %}

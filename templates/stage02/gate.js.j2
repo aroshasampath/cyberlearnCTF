@@ -1,0 +1,170 @@
+/*
+    CyberLearn CTF
+    Stage 02 - The Broken Gate
+
+    EDUCATIONAL CTF CHALLENGE
+
+    This JavaScript intentionally contains
+    client-side sensitive information.
+
+    The main CyberLearn platform does NOT
+    use this mechanism for authentication.
+*/
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        /*
+         * =====================================================
+         * INTENTIONALLY VULNERABLE CONFIGURATION
+         * =====================================================
+         *
+         * In a real application, access-control information
+         * and sensitive rewards should never be trusted or
+         * exposed entirely on the client side.
+         */
+
+        const clientConfiguration = {
+
+            accessCode:
+                {{ access_code | tojson }},
+
+            reward:
+                {{ stage2_flag | tojson }}
+
+        };
+
+
+        /*
+         * =====================================================
+         * PAGE ELEMENTS
+         * =====================================================
+         */
+
+        const gateForm =
+            document.getElementById(
+                "gate-form"
+            );
+
+
+        const accessInput =
+            document.getElementById(
+                "access-code"
+            );
+
+
+        const gateMessage =
+            document.getElementById(
+                "gate-message"
+            );
+
+
+        const restrictedResource =
+            document.getElementById(
+                "restricted-resource"
+            );
+
+
+        const flagOutput =
+            document.getElementById(
+                "stage02-flag"
+            );
+
+
+        /*
+         * Verify that the required HTML elements exist.
+         */
+
+        if (
+            !gateForm ||
+            !accessInput ||
+            !gateMessage ||
+            !restrictedResource ||
+            !flagOutput
+        ) {
+
+            console.error(
+                "Stage 02 interface elements are missing."
+            );
+
+            return;
+        }
+
+
+        /*
+         * =====================================================
+         * CLIENT-SIDE ACCESS CHECK
+         * =====================================================
+         *
+         * This is deliberately insecure for the CTF.
+         */
+
+        gateForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const suppliedCode =
+                    accessInput.value.trim();
+
+
+                /*
+                 * Client-side comparison.
+                 *
+                 * A participant can inspect this JavaScript
+                 * and discover the exposed access code.
+                 */
+
+                if (
+                    suppliedCode ===
+                    clientConfiguration.accessCode
+                ) {
+
+                    gateMessage.textContent =
+                        "[ACCESS GRANTED] "
+                        + "Client verification succeeded.";
+
+
+                    gateMessage.className =
+                        "gate-message gate-success";
+
+
+                    /*
+                     * Reveal Stage 02 reward.
+                     */
+
+                    flagOutput.textContent =
+                        clientConfiguration.reward;
+
+
+                    restrictedResource.hidden =
+                        false;
+
+                }
+
+                else {
+
+                    gateMessage.textContent =
+                        "[ACCESS DENIED] "
+                        + "Invalid access code.";
+
+
+                    gateMessage.className =
+                        "gate-message gate-error";
+
+
+                    flagOutput.textContent =
+                        "";
+
+
+                    restrictedResource.hidden =
+                        true;
+                }
+            }
+        );
+    }
+);

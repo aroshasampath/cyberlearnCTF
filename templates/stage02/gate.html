@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}
+The Broken Gate | CyberLearn CTF
+{% endblock %}
+
+
+{% block content %}
+
+<section class="stage02-page">
+
+
+    <a
+        class="back-link"
+        href="{{ url_for('challenge', stage_id=2) }}"
+    >
+        ← Back to Stage 02
+    </a>
+
+
+    <div class="gate-header">
+
+        <p class="tag">
+            CYBERLEARN RESTRICTED SYSTEM
+        </p>
+
+        <h1>
+            The Broken Gate
+        </h1>
+
+        <p>
+            This resource is protected by a
+            client-side access verification system.
+        </p>
+
+    </div>
+
+
+    <div class="gate-terminal">
+
+
+        <div class="terminal-bar">
+
+            <span>
+                cyberlearn://restricted-access
+            </span>
+
+            <span>
+                ● ● ●
+            </span>
+
+        </div>
+
+
+        <div class="terminal-content">
+
+
+            <p class="terminal-line">
+                [SYSTEM] Restricted resource detected.
+            </p>
+
+
+            <p class="terminal-line">
+                [SYSTEM] Client verification module loaded.
+            </p>
+
+
+            <p class="terminal-warning">
+                [WARNING] Authorised investigators only.
+            </p>
+
+
+            <form
+                id="gate-form"
+                class="gate-form"
+            >
+
+                <label for="access-code">
+                    Access Code
+                </label>
+
+
+                <input
+                    id="access-code"
+                    name="access_code"
+                    type="password"
+                    placeholder="Enter access code"
+                    autocomplete="off"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    class="btn"
+                >
+                    Verify Access
+                </button>
+
+            </form>
+
+
+            <div
+                id="gate-message"
+                class="gate-message"
+            >
+            </div>
+
+
+            <div
+                id="restricted-resource"
+                class="restricted-resource"
+                hidden
+            >
+
+                <p class="tag">
+                    ACCESS GRANTED
+                </p>
+
+
+                <h2>
+                    Restricted Resource
+                </h2>
+
+
+                <p>
+                    The gate trusted information
+                    stored inside the participant's
+                    browser.
+                </p>
+
+
+                <p>
+                    Inspecting the client-side logic
+                    revealed information that should
+                    not normally be exposed.
+                </p>
+
+
+                <div class="stage02-flag-box">
+
+                    <span>
+                        Recovered Flag
+                    </span>
+
+                    <code id="stage02-flag"></code>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="investigation-note">
+
+        <strong>
+            Investigator Note
+        </strong>
+
+        <p>
+            Remember the clue recovered during
+            Stage 01:
+            “The next gate trusts the browser
+            more than it should.”
+        </p>
+
+    </div>
+
+
+</section>
+
+
+<script
+    src="{{ url_for('stage02_script') }}"
+    defer
+></script>
+
+{% endblock %}

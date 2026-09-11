@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login | CyberLearn CTF
+{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <form
+        method="POST"
+        class="form-card"
+    >
+
+        {{ form.hidden_tag() }}
+
+        <p class="tag">
+            PARTICIPANT ACCESS
+        </p>
+
+        <h1>
+            Login
+        </h1>
+
+
+        {{ form.username.label }}
+
+        {{ form.username(
+            placeholder="Username"
+        ) }}
+
+
+        {{ form.password.label }}
+
+        {{ form.password(
+            placeholder="Password"
+        ) }}
+
+
+        {{ form.submit(
+            class="btn full"
+        ) }}
+
+    </form>
+
+</div>
+
+{% endblock %}

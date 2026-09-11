@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}
+Challenges | CyberLearn CTF
+{% endblock %}
+
+{% block content %}
+
+<section class="dashboard">
+
+    <div class="dashboard-heading">
+
+        <div>
+
+            <p class="tag">
+                PARTICIPANT DASHBOARD
+            </p>
+
+            <h1>
+                Security Quest
+            </h1>
+
+            <p>
+                Welcome,
+                <strong>
+                    {{ session.get('username') }}
+                </strong>.
+                Complete each stage to unlock the next challenge.
+            </p>
+
+        </div>
+
+
+        <div class="progress-card">
+
+            <span>
+                Overall Progress
+            </span>
+
+            <strong>
+                {{ completed_count }} / 6
+            </strong>
+
+            <progress
+                value="{{ completed_count }}"
+                max="6"
+            >
+            </progress>
+
+        </div>
+
+    </div>
+
+
+    <div class="challenge-grid">
+
+        {% for challenge in challenges %}
+
+            <article
+                class="
+                    challenge-card
+                    {% if challenge.completed %}
+                        completed-card
+                    {% elif not challenge.unlocked %}
+                        locked-card
+                    {% endif %}
+                "
+            >
+
+                <div class="challenge-top">
+
+                    <span class="stage">
+                        STAGE {{ "%02d"|format(challenge.id) }}
+                    </span>
+
+                    {% if challenge.completed %}
+
+                        <span class="status completed">
+                            Completed
+                        </span>
+
+                    {% elif challenge.unlocked %}
+
+                        <span class="status unlocked">
+                            Unlocked
+                        </span>
+
+                    {% else %}
+
+                        <span class="status locked">
+                            Locked
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <h2>
+                    {{ challenge.title }}
+                </h2>
+
+
+                <p class="domain">
+                    {{ challenge.domain }}
+                </p>
+
+
+                <p class="objective">
+                    {{ challenge.objective }}
+                </p>
+
+
+                <div class="challenge-bottom">
+
+                    <span class="difficulty">
+                        {{ challenge.difficulty }}
+                    </span>
+
+
+                    {% if challenge.completed %}
+
+                        <a
+                            class="btn secondary small"
+                            href="{{ url_for(
+                                'challenge',
+                                stage_id=challenge.id
+                            ) }}"
+                        >
+                            Review
+                        </a>
+
+                    {% elif challenge.unlocked %}
+
+                        <a
+                            class="btn small"
+                            href="{{ url_for(
+                                'challenge',
+                                stage_id=challenge.id
+                            ) }}"
+                        >
+                            Open Stage
+                        </a>
+
+                    {% else %}
+
+                        <button
+                            class="btn disabled small"
+                            disabled
+                        >
+                            Locked
+                        </button>
+
+                    {% endif %}
+
+                </div>
+
+            </article>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}
