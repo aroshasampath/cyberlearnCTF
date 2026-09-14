@@ -1,82 +1,131 @@
 {% extends "base.html" %}
 
-{% block title %}
-CyberLearn CTF
-{% endblock %}
+{% block title %}CyberLearn CTF | Security Quest{% endblock %}
 
 {% block content %}
+<div class="home-container">
 
-<section class="hero">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-badge">
+            <span class="pulse-dot"></span>
+            <span>SLIIT PENETRATION TESTING &bull; GROUP 18</span>
+        </div>
 
-    <p class="tag">
-        GROUP 18 PRESENTS
-    </p>
+        <h1 class="hero-title">
+            Master Cybersecurity with <span class="gradient-text">CyberLearn CTF</span>
+        </h1>
 
-    <h1>
-        CyberLearn CTF
-    </h1>
+        <p class="hero-subtitle">
+            An immersive six-stage capture-the-flag challenge designed for practical learning. 
+            Investigate digital artefacts, break client-side gate logic, reverse cryptographic layers, and uncover hidden misconfigurations.
+        </p>
 
-    <h2>
-        Group 18 Security Quest
-    </h2>
+        <div class="hero-cta-buttons">
+            {% if session.get('user_id') %}
+                <a class="btn primary-glow" href="{{ url_for('dashboard') }}">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <span>Continue Your Quest</span>
+                </a>
+                <a class="btn secondary" href="{{ url_for('account') }}">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"></circle><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path></svg>
+                    <span>Manage Account</span>
+                </a>
+            {% else %}
+                <a class="btn primary-glow" href="{{ url_for('register') }}">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                    <span>Start Quest Now</span>
+                </a>
+                <a class="btn secondary" href="{{ url_for('login') }}">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                    <span>Participant Login</span>
+                </a>
+            {% endif %}
+        </div>
 
-    <p>
-        Learn practical cybersecurity through a
-        progressive six-stage Capture The Flag
-        investigation.
-    </p>
+        <!-- Terminal Showcase -->
+        <div class="hero-terminal">
+            <div class="terminal-bar">
+                <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+                <span class="terminal-title">cyberlearn@quest: ~</span>
+            </div>
+            <div class="terminal-body font-mono">
+                <p><span class="term-prompt">$</span> ./launch_cyberlearn_quest.sh --init</p>
+                <p class="term-dim">[INFO] Verifying security environment and stage digests...</p>
+                <p class="term-success">[OK] 6 progressive challenge domains loaded and ready.</p>
+                <p class="term-cyan">[READY] Stage 01: Hidden in Plain Sight is active. Good luck, participant!</p>
+            </div>
+        </div>
+    </section>
 
-    <div class="buttons">
+    <!-- Six Security Domains Grid -->
+    <section class="domains-section">
+        <div class="section-header">
+            <p class="section-tag">INVESTIGATION MODULES</p>
+            <h2 class="section-title">Six Progressive Security Domains</h2>
+            <p class="section-desc">Each stage builds upon the concepts of the previous one, testing core offensive and defensive analysis skills.</p>
+        </div>
 
-        {% if session.get('user_id') %}
+        <div class="domains-grid">
+            <div class="domain-card domain-stego">
+                <div class="domain-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                </div>
+                <div class="domain-badge">STAGE 01</div>
+                <h3>Steganography</h3>
+                <p>Hidden metadata, deep file structure analysis, and embedded digital artefacts.</p>
+            </div>
 
-            <a
-                class="btn"
-                href="{{ url_for('dashboard') }}"
-            >
-                Continue Quest
-            </a>
+            <div class="domain-card domain-web">
+                <div class="domain-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </div>
+                <div class="domain-badge">STAGE 02</div>
+                <h3>Web Security</h3>
+                <p>Client-side security flaws, intentionally exposed JavaScript logic, and gate bypasses.</p>
+            </div>
 
-        {% else %}
+            <div class="domain-card domain-crypto">
+                <div class="domain-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+                <div class="domain-badge">STAGE 03</div>
+                <h3>Cryptography</h3>
+                <p>Multi-layered encoding pipelines, classical cipher inversion, and key recovery.</p>
+            </div>
 
-            <a
-                class="btn"
-                href="{{ url_for('register') }}"
-            >
-                Start Your Quest
-            </a>
+            <div class="domain-card domain-forensics">
+                <div class="domain-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <div class="domain-badge">STAGE 04</div>
+                <h3>Digital Forensics</h3>
+                <p>Evidence log triage, artefact correlation, timeline analysis, and trace hunting.</p>
+            </div>
 
-            <a
-                class="btn secondary"
-                href="{{ url_for('login') }}"
-            >
-                Login
-            </a>
+            <div class="domain-card domain-network">
+                <div class="domain-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                </div>
+                <div class="domain-badge">STAGE 05</div>
+                <h3>Networking</h3>
+                <p>PCAP packet stream isolation, protocol dissection, and covert payload extraction.</p>
+            </div>
 
-        {% endif %}
+            <div class="domain-card domain-linux">
+                <div class="domain-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                </div>
+                <div class="domain-badge">STAGE 06</div>
+                <h3>Linux / System Security</h3>
+                <p>Linux privilege misconfigurations, sudo rule analysis, auth log inspection, and root access.</p>
+            </div>
+        </div>
+    </section>
 
-    </div>
-
-</section>
-
-
-<section class="domains">
-
-    <h2>
-        Six Security Domains
-    </h2>
-
-    <div class="domain-grid">
-
-        <div>Steganography</div>
-        <div>Web Security</div>
-        <div>Cryptography</div>
-        <div>Digital Forensics</div>
-        <div>Networking</div>
-        <div>Linux / System Security</div>
-
-    </div>
-
-</section>
-
+</div>
 {% endblock %}

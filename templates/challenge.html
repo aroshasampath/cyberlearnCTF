@@ -1,740 +1,326 @@
 {% extends "base.html" %}
 
-{% block title %}
-{{ challenge.title }} | CyberLearn CTF
-{% endblock %}
-
+{% block title %}{{ challenge.title }} | CyberLearn CTF{% endblock %}
 
 {% block content %}
-
 <section class="challenge-page">
 
-    <!-- ==================================================
-         BACK LINK
-         ================================================== -->
-
-    <a
-        class="back-link"
-        href="{{ url_for('dashboard') }}"
-    >
-        ← Back to Challenges
+    <!-- Back Navigation -->
+    <a class="back-link" href="{{ url_for('dashboard') }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <span>Back to Challenges Dashboard</span>
     </a>
 
+    <!-- Stage Header Banner -->
+    <div class="challenge-header-card">
+        <div class="challenge-header-top">
+            <span class="stage-pill">STAGE {{ "%02d"|format(challenge.id) }}</span>
+            <div class="challenge-meta-tags">
+                <span class="domain-tag domain-tag-{{ challenge.id }}">{{ challenge.domain }}</span>
+                <span class="difficulty-pill difficulty-{{ challenge.difficulty|lower|replace(' ', '-') }}">{{ challenge.difficulty }}</span>
+                {% if completed %}
+                    <span class="status-pill status-completed">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Solved</span>
+                    </span>
+                {% else %}
+                    <span class="status-pill status-unlocked">
+                        <span class="pulse-indicator"></span>
+                        <span>Active Mission</span>
+                    </span>
+                {% endif %}
+            </div>
+        </div>
 
-    <!-- ==================================================
-         STAGE HEADER
-         ================================================== -->
-
-    <p class="tag">
-        STAGE {{ "%02d"|format(challenge.id) }}
-    </p>
-
-
-    <h1>
-        {{ challenge.title }}
-    </h1>
-
-
-    <div class="meta">
-
-        <span>
-            {{ challenge.domain }}
-        </span>
-
-        <span>
-            {{ challenge.difficulty }}
-        </span>
-
+        <h1 class="challenge-title">{{ challenge.title }}</h1>
     </div>
 
-
-    <!-- ==================================================
-         MISSION BRIEF
-         ================================================== -->
-
+    <!-- Mission Briefing Card -->
     <div class="mission-card">
+        <div class="mission-card-header">
+            <div class="mission-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            </div>
+            <div>
+                <p class="tag-label">MISSION BRIEFING</p>
+                <h2>Operational Objective</h2>
+            </div>
+        </div>
 
-        <p class="tag">
-            MISSION BRIEF
-        </p>
-
-        <h2>
-            Your Objective
-        </h2>
-
-        <p>
-            {{ challenge.mission }}
-        </p>
-
+        <p class="mission-description">{{ challenge.mission }}</p>
 
         <div class="learning-box">
-
-            <strong>
-                Learning Objective
-            </strong>
-
-            <p>
-                {{ challenge.objective }}
-            </p>
-
+            <div class="learning-box-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+            </div>
+            <div>
+                <strong>Learning Outcome</strong>
+                <p>{{ challenge.objective }}</p>
+            </div>
         </div>
-
     </div>
 
-
-    <!-- ==================================================
-         CHALLENGE MATERIAL
-         ================================================== -->
-
+    <!-- Challenge Material Card -->
     <div class="material-card">
+        <div class="material-card-header">
+            <div class="material-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </div>
+            <div>
+                <p class="tag-label">CHALLENGE MATERIAL</p>
+                <h2>Investigation Artefacts & Lab Environment</h2>
+            </div>
+        </div>
 
-        <p class="tag">
-            CHALLENGE MATERIAL
-        </p>
-
-
-        <!-- ==================================================
-             STAGE 01
-             ================================================== -->
-
+        <!-- STAGE 01 -->
         {% if challenge.id == 1 %}
-
-            <h2>
-                Download Challenge Artefact
-            </h2>
-
-            <p>
-                Download the provided image and investigate
-                the file carefully. Recover the hidden flag
-                and submit it below.
-            </p>
-
-            <br>
-
-            <a
-                class="btn"
-                href="{{ url_for('download_stage01') }}"
-            >
-                Download welcome.png
-            </a>
-
-
-            <div class="hint-section">
-
-                <h3>
-                    Progressive Hints
-                </h3>
-
-                <details>
-
-                    <summary>
-                        Hint 1
-                    </summary>
-
-                    <p>
-                        Not everything contained in an image
-                        can be seen by looking at it.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 2
-                    </summary>
-
-                    <p>
-                        Examine information associated with
-                        the file itself.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 3
-                    </summary>
-
-                    <p>
-                        Consider metadata analysis tools such
-                        as ExifTool.
-                    </p>
-
-                </details>
-
+            <div class="material-content">
+                <p>Download the provided image and inspect the file thoroughly. Recover the hidden flag embedded within the digital artefact.</p>
+                <div class="artefact-download-box">
+                    <div class="artefact-info">
+                        <span class="artefact-name">welcome.png</span>
+                        <span class="artefact-meta">Image Artefact &bull; Steganographic Target</span>
+                    </div>
+                    <a class="btn primary-glow" href="{{ url_for('download_stage01') }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Download welcome.png</span>
+                    </a>
+                </div>
             </div>
 
+            <div class="hint-section">
+                <h3>Progressive Hints</h3>
+                <details class="hint-accordion">
+                    <summary><span>Hint 1: Visual vs File Content</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Not everything contained in an image can be seen by looking at it directly.</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 2: File Structure</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Examine information associated with the file itself rather than just rendered pixels.</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 3: Specialised Utilities</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Consider metadata analysis tools such as ExifTool, strings, or hex viewers.</p></div>
+                </details>
+            </div>
 
-        <!-- ==================================================
-             STAGE 02
-             ================================================== -->
-
+        <!-- STAGE 02 -->
         {% elif challenge.id == 2 %}
-
-            <h2>
-                Controlled Web Challenge
-            </h2>
-
-            <p>
-                A restricted web interface appears to
-                protect sensitive information using
-                client-side verification.
-            </p>
-
-            <p>
-                Investigate the web application using
-                your browser's developer tools and
-                determine what information the gate
-                trusts.
-            </p>
-
-            <br>
-
-            <a
-                class="btn"
-                href="{{ url_for('stage02_gate') }}"
-            >
-                Launch The Broken Gate
-            </a>
-
-
-            <div class="hint-section">
-
-                <h3>
-                    Progressive Hints
-                </h3>
-
-
-                <details>
-
-                    <summary>
-                        Hint 1
-                    </summary>
-
-                    <p>
-                        Remember the clue recovered
-                        during Stage 01:
-                        the next gate trusts the browser.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 2
-                    </summary>
-
-                    <p>
-                        Think about which application
-                        resources are downloaded into
-                        your browser.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 3
-                    </summary>
-
-                    <p>
-                        Open Developer Tools and inspect
-                        the JavaScript used by the page.
-                    </p>
-
-                </details>
-
+            <div class="material-content">
+                <p>A restricted web interface appears to protect sensitive information using client-side verification. Investigate the web application using your browser developer tools and determine what information the gate trusts.</p>
+                <div class="artefact-download-box">
+                    <div class="artefact-info">
+                        <span class="artefact-name">The Broken Gate</span>
+                        <span class="artefact-meta">Interactive Web Target &bull; Port 5000</span>
+                    </div>
+                    <a class="btn primary-glow" href="{{ url_for('stage02_gate') }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                        <span>Launch The Broken Gate</span>
+                    </a>
+                </div>
             </div>
 
+            <div class="hint-section">
+                <h3>Progressive Hints</h3>
+                <details class="hint-accordion">
+                    <summary><span>Hint 1: Preceding Clue</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Remember the clue recovered during Stage 01: the next gate trusts the browser.</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 2: Downloaded Assets</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Think about which application resources and scripts are downloaded into your browser.</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 3: DevTools Inspection</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Open Developer Tools (F12) and inspect the JavaScript used by the page, specifically the sources panel or network tab.</p></div>
+                </details>
+            </div>
 
-        <!-- ==================================================
-             STAGE 03
-             ================================================== -->
-
+        <!-- STAGE 03 -->
         {% elif challenge.id == 3 %}
-
-            <h2>
-                Download Encoded Message
-            </h2>
-
-            <p>
-                An intercepted message has been
-                transformed using more than one
-                technique.
-            </p>
-
-            <p>
-                Analyse the provided text file,
-                reverse the transformation layers,
-                and recover the original message.
-            </p>
-
-            <br>
-
-            <a
-                class="btn"
-                href="{{ url_for('download_stage03') }}"
-            >
-                Download message.txt
-            </a>
-
-
-            <div class="hint-section">
-
-                <h3>
-                    Progressive Hints
-                </h3>
-
-
-                <details>
-
-                    <summary>
-                        Hint 1
-                    </summary>
-
-                    <p>
-                        The visible text is an encoded
-                        representation of another string.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 2
-                    </summary>
-
-                    <p>
-                        The outer layer is commonly used
-                        to represent binary or textual
-                        data using printable characters.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 3
-                    </summary>
-
-                    <p>
-                        After Base64 decoding, the message
-                        is still protected with a Caesar
-                        cipher using a shift of 5.
-                    </p>
-
-                </details>
-
+            <div class="material-content">
+                <p>An intercepted message has been transformed using more than one technique. Analyse the provided text file, reverse the transformation layers, and recover the original message.</p>
+                <div class="artefact-download-box">
+                    <div class="artefact-info">
+                        <span class="artefact-name">message.txt</span>
+                        <span class="artefact-meta">Encoded Payload &bull; Cryptographic Challenge</span>
+                    </div>
+                    <a class="btn primary-glow" href="{{ url_for('download_stage03') }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Download message.txt</span>
+                    </a>
+                </div>
             </div>
 
+            <div class="hint-section">
+                <h3>Progressive Hints</h3>
+                <details class="hint-accordion">
+                    <summary><span>Hint 1: Layered Transformation</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>The visible text is an encoded representation of another string.</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 2: Outer Layer</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>The outer layer is commonly used to represent binary or textual data using printable ASCII characters (Base64).</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 3: Inner Cipher</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>After Base64 decoding, the message is still protected with a Caesar cipher using a shift of 5.</p></div>
+                </details>
+            </div>
 
-        <!-- ==================================================
-             STAGE 04
-             ================================================== -->
-
+        <!-- STAGE 04 -->
         {% elif challenge.id == 4 %}
-
-            <h2>
-                Download Digital Evidence
-            </h2>
-
-            <p>
-                A suspicious user session was detected
-                on a training workstation.
-            </p>
-
-            <p>
-                Analyse the collected evidence,
-                correlate activity across the available
-                files, and determine what the suspicious
-                session accessed.
-            </p>
-
-            <br>
-
-            <a
-                class="btn"
-                href="{{ url_for('download_stage04') }}"
-            >
-                Download evidence.zip
-            </a>
-
-
-            <div class="hint-section">
-
-                <h3>
-                    Progressive Hints
-                </h3>
-
-
-                <details>
-
-                    <summary>
-                        Hint 1
-                    </summary>
-
-                    <p>
-                        Start by identifying unusual
-                        authentication activity and
-                        suspicious timestamps.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 2
-                    </summary>
-
-                    <p>
-                        Pay attention to commands executed
-                        during the suspicious user session.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 3
-                    </summary>
-
-                    <p>
-                        The relevant artefact may not be
-                        visible with a normal directory
-                        listing. Hidden files can be
-                        important forensic evidence.
-                    </p>
-
-                </details>
-
+            <div class="material-content">
+                <p>A suspicious user session was detected on a training workstation. Analyse the collected evidence, correlate activity across the available files, and determine what the suspicious session accessed.</p>
+                <div class="artefact-download-box">
+                    <div class="artefact-info">
+                        <span class="artefact-name">evidence.zip</span>
+                        <span class="artefact-meta">Forensic Archive &bull; Logs & Terminal Files</span>
+                    </div>
+                    <a class="btn primary-glow" href="{{ url_for('download_stage04') }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Download evidence.zip</span>
+                    </a>
+                </div>
             </div>
 
+            <div class="hint-section">
+                <h3>Progressive Hints</h3>
+                <details class="hint-accordion">
+                    <summary><span>Hint 1: Authentication Logs</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Start by identifying unusual authentication activity and suspicious timestamps.</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 2: Shell History</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Pay attention to commands executed during the suspicious user session.</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 3: Hidden Files</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>The relevant artefact may not be visible with a normal directory listing. Hidden files (starting with a dot) can be critical forensic evidence.</p></div>
+                </details>
+            </div>
 
-        <!-- ==================================================
-             STAGE 05
-             ================================================== -->
-
+        <!-- STAGE 05 -->
         {% elif challenge.id == 5 %}
-
-            <h2>
-                Download Network Capture
-            </h2>
-
-            <p>
-                Network traffic was captured during
-                a suspicious investigation session.
-            </p>
-
-            <p>
-                Analyse the packet capture, identify
-                the relevant conversation, and recover
-                the hidden investigation marker.
-            </p>
-
-            <br>
-
-            <a
-                class="btn"
-                href="{{ url_for('download_stage05') }}"
-            >
-                Download traffic_capture.pcap
-            </a>
-
-
-            <div class="hint-section">
-
-                <h3>
-                    Progressive Hints
-                </h3>
-
-
-                <details>
-
-                    <summary>
-                        Hint 1
-                    </summary>
-
-                    <p>
-                        Not every packet in the capture
-                        is relevant. Start by identifying
-                        the protocols and conversations
-                        present in the traffic.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 2
-                    </summary>
-
-                    <p>
-                        HTTP traffic may contain a useful
-                        investigation request.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 3
-                    </summary>
-
-                    <p>
-                        Locate the investigation-related
-                        HTTP request and use
-                        Follow TCP Stream to reconstruct
-                        the complete conversation.
-                    </p>
-
-                </details>
-
+            <div class="material-content">
+                <p>Network traffic was captured during a suspicious investigation session. Analyse the packet capture, identify the relevant conversation, and recover the hidden investigation marker.</p>
+                <div class="artefact-download-box">
+                    <div class="artefact-info">
+                        <span class="artefact-name">traffic_capture.pcap</span>
+                        <span class="artefact-meta">Packet Capture File &bull; Wireshark / Network Analysis</span>
+                    </div>
+                    <a class="btn primary-glow" href="{{ url_for('download_stage05') }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Download traffic_capture.pcap</span>
+                    </a>
+                </div>
             </div>
 
+            <div class="hint-section">
+                <h3>Progressive Hints</h3>
+                <details class="hint-accordion">
+                    <summary><span>Hint 1: Filter Traffic</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Not every packet in the capture is relevant. Start by identifying the protocols and conversations present in the traffic.</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 2: Web Requests</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>HTTP traffic may contain a useful investigation request with parameters or headers.</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 3: Follow TCP Stream</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Locate the investigation-related HTTP request and use Follow TCP Stream in Wireshark to reconstruct the complete conversation.</p></div>
+                </details>
+            </div>
 
-        <!-- ==================================================
-             STAGE 06
-             THE MISCONFIGURED SERVER
-             ================================================== -->
-
+        <!-- STAGE 06 -->
         {% elif challenge.id == 6 %}
-
-            <h2>
-                Final Evidence Package
-            </h2>
-
-
-            <p>
-                Evidence has been collected from a
-                simulated Linux server as part of the
-                final investigation.
-            </p>
-
-
-            <p>
-                Analyse the supplied user information,
-                privilege configuration, authentication
-                logs and system notes.
-            </p>
-
-
-            <p>
-                Your task is to identify the intended
-                Linux privilege-security weakness,
-                correlate the evidence and recover the
-                final CyberLearn CTF flag.
-            </p>
-
-
-            <br>
-
-
-            <a
-                class="btn"
-                href="{{ url_for('download_stage06') }}"
-            >
-                Download stage06_evidence.zip
-            </a>
-
-
-            <!-- ==============================================
-                 STAGE 06 HINTS
-                 ============================================== -->
-
-            <div class="hint-section">
-
-                <h3>
-                    Progressive Hints
-                </h3>
-
-
-                <details>
-
-                    <summary>
-                        Hint 1
-                    </summary>
-
-                    <p>
-                        Begin by identifying the Linux
-                        user accounts contained in the
-                        evidence package.
-                    </p>
-
-                    <p>
-                        Some service accounts may have
-                        different privileges from normal
-                        users.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 2
-                    </summary>
-
-                    <p>
-                        Review the privilege-related
-                        configuration carefully.
-                    </p>
-
-                    <p>
-                        Ask yourself whether any account
-                        has been granted more privilege
-                        than it actually requires.
-                    </p>
-
-                </details>
-
-
-                <details>
-
-                    <summary>
-                        Hint 3
-                    </summary>
-
-                    <p>
-                        After identifying the suspicious
-                        account, search the authentication
-                        log for activity associated with
-                        that account.
-                    </p>
-
-                    <p>
-                        A privileged command may reveal
-                        the path of the final evidence
-                        file.
-                    </p>
-
-                </details>
-
-
+            <div class="material-content">
+                <p>Evidence has been collected from a simulated Linux server as part of the final investigation. Analyse the supplied user information, privilege configuration, authentication logs, and system notes to recover the final flag.</p>
+                <div class="artefact-download-box">
+                    <div class="artefact-info">
+                        <span class="artefact-name">stage06_evidence.zip</span>
+                        <span class="artefact-meta">Server Logs & Sudoers &bull; Privilege Escalation Target</span>
+                    </div>
+                    <a class="btn primary-glow" href="{{ url_for('download_stage06') }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Download stage06_evidence.zip</span>
+                    </a>
+                </div>
             </div>
 
-
-        <!-- ==================================================
-             FALLBACK
-             ================================================== -->
+            <div class="hint-section">
+                <h3>Progressive Hints</h3>
+                <details class="hint-accordion">
+                    <summary><span>Hint 1: Linux User Audit</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Begin by identifying the Linux user accounts contained in the evidence package. Some service accounts may have different privileges from normal users.</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 2: Sudoers Configuration</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>Review the privilege-related configuration carefully. Ask yourself whether any account has been granted more privilege than it actually requires.</p></div>
+                </details>
+                <details class="hint-accordion">
+                    <summary><span>Hint 3: Sudo Execution History</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                    <div class="hint-body"><p>After identifying the suspicious account, search the authentication log for activity associated with that account. A privileged command may reveal the path of the final evidence file.</p></div>
+                </details>
+            </div>
 
         {% else %}
-
-            <h2>
-                Challenge Artefact
-            </h2>
-
-            <p>
-                No challenge material is currently
-                available for this stage.
-            </p>
-
+            <p>No challenge material is currently available for this stage.</p>
         {% endif %}
-
-
     </div>
 
-
-    <!-- ==================================================
-         FLAG SUBMISSION / COMPLETED STATUS
-         ================================================== -->
-
+    <!-- Flag Submission or Solved Card -->
     {% if completed %}
-
         <div class="completed-panel">
-
-            <h2>
-                ✓ Stage Completed
-            </h2>
-
-            <p>
-                Your progress has been recorded.
-            </p>
-
+            <div class="completed-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <div class="completed-text">
+                <h2>Stage Completed Successfully</h2>
+                <p>Your flag has been validated and recorded. You have unlocked access to the next stage in your dashboard.</p>
+            </div>
+            <a class="btn primary-btn" href="{{ url_for('dashboard') }}">
+                <span>Return to Dashboard</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
         </div>
-
-
     {% else %}
-
         <div class="flag-card">
+            <div class="flag-card-header">
+                <div class="flag-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                </div>
+                <div>
+                    <p class="tag-label">FLAG VALIDATION</p>
+                    <h2>Submit Discovered Flag</h2>
+                </div>
+            </div>
 
-            <p class="tag">
-                FLAG VALIDATION
+            <p class="flag-format-hint">
+                Expected format: <code class="font-mono">GROUP18{...}</code>
             </p>
 
-            <h2>
-                Submit Your Flag
-            </h2>
+            <form method="POST" action="{{ url_for('submit_flag', stage_id=challenge.id) }}" class="flag-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-            <p>
-                Expected format:
-
-                <code>
-                    GROUP18{challenge_specific_value}
-                </code>
-            </p>
-
-
-            <form
-                method="POST"
-                action="{{ url_for(
-                    'submit_flag',
-                    stage_id=challenge.id
-                ) }}"
-                class="flag-form"
-            >
-
-                <input
-                    type="hidden"
-                    name="csrf_token"
-                    value="{{ csrf_token() }}"
-                >
-
-
-                <input
-                    type="text"
-                    name="flag"
-                    maxlength="200"
-                    placeholder="GROUP18{...}"
-                    autocomplete="off"
-                    required
-                >
-
-
-                <button
-                    type="submit"
-                    class="btn"
-                >
-                    Validate Flag
-                </button>
-
+                <div class="flag-input-group">
+                    <input
+                        type="text"
+                        name="flag"
+                        maxlength="200"
+                        placeholder="GROUP18{enter_recovered_flag_here}"
+                        autocomplete="off"
+                        class="form-control font-mono flag-input"
+                        required
+                    >
+                    <button type="submit" class="btn primary-glow flag-submit-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Validate Flag</span>
+                    </button>
+                </div>
             </form>
-
         </div>
-
     {% endif %}
 
-
 </section>
-
 {% endblock %}

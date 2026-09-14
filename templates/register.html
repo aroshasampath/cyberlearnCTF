@@ -1,95 +1,84 @@
 {% extends "base.html" %}
 
-{% block title %}
-Register | CyberLearn CTF
-{% endblock %}
+{% block title %}Register Operative | CyberLearn CTF{% endblock %}
 
 {% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon-badge">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+            </div>
+            <p class="auth-tag">NEW PARTICIPANT</p>
+            <h1 class="auth-title">Create Account</h1>
+            <p class="auth-desc">Register to begin your six-stage CTF security quest.</p>
+        </div>
 
-<div class="form-container">
+        <form method="POST" class="auth-form" novalidate>
+            {{ form.hidden_tag() }}
 
-    <form
-        method="POST"
-        class="form-card"
-    >
+            <div class="form-group">
+                {{ form.username.label(class="form-label") }}
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </span>
+                    {{ form.username(class="form-control with-icon", placeholder="Choose username", autocomplete="username") }}
+                </div>
+                <span class="form-hint">Only letters, numbers, underscores and hyphens.</span>
+                {% for error in form.username.errors %}
+                    <p class="field-error">{{ error }}</p>
+                {% endfor %}
+            </div>
 
-        {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.email.label(class="form-label") }}
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    </span>
+                    {{ form.email(class="form-control with-icon", placeholder="operative@example.com", autocomplete="email") }}
+                </div>
+                {% for error in form.email.errors %}
+                    <p class="field-error">{{ error }}</p>
+                {% endfor %}
+            </div>
 
-        <p class="tag">
-            NEW PARTICIPANT
-        </p>
+            <div class="form-group">
+                {{ form.password.label(class="form-label") }}
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </span>
+                    {{ form.password(class="form-control with-icon", placeholder="Minimum 10 characters", autocomplete="new-password") }}
+                </div>
+                <span class="form-hint">At least 10 chars with letters and numbers.</span>
+                {% for error in form.password.errors %}
+                    <p class="field-error">{{ error }}</p>
+                {% endfor %}
+            </div>
 
-        <h1>
-            Create Account
-        </h1>
+            <div class="form-group">
+                {{ form.confirm_password.label(class="form-label") }}
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </span>
+                    {{ form.confirm_password(class="form-control with-icon", placeholder="Confirm password", autocomplete="new-password") }}
+                </div>
+                {% for error in form.confirm_password.errors %}
+                    <p class="field-error">{{ error }}</p>
+                {% endfor %}
+            </div>
 
+            <div class="form-actions">
+                {{ form.submit(class="btn full primary-glow") }}
+            </div>
+        </form>
 
-        {{ form.username.label }}
-
-        {{ form.username(
-            placeholder="Username"
-        ) }}
-
-        {% for error in form.username.errors %}
-
-            <p class="field-error">
-                {{ error }}
-            </p>
-
-        {% endfor %}
-
-
-        {{ form.email.label }}
-
-        {{ form.email(
-            placeholder="you@example.com"
-        ) }}
-
-        {% for error in form.email.errors %}
-
-            <p class="field-error">
-                {{ error }}
-            </p>
-
-        {% endfor %}
-
-
-        {{ form.password.label }}
-
-        {{ form.password(
-            placeholder="Minimum 10 characters"
-        ) }}
-
-        {% for error in form.password.errors %}
-
-            <p class="field-error">
-                {{ error }}
-            </p>
-
-        {% endfor %}
-
-
-        {{ form.confirm_password.label }}
-
-        {{ form.confirm_password(
-            placeholder="Repeat password"
-        ) }}
-
-        {% for error in form.confirm_password.errors %}
-
-            <p class="field-error">
-                {{ error }}
-            </p>
-
-        {% endfor %}
-
-
-        {{ form.submit(
-            class="btn full"
-        ) }}
-
-    </form>
-
+        <div class="auth-footer">
+            <p>Already registered? <a href="{{ url_for('login') }}" class="auth-link">Login to your account</a></p>
+        </div>
+    </div>
 </div>
-
 {% endblock %}

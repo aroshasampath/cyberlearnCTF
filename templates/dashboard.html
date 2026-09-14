@@ -1,166 +1,104 @@
 {% extends "base.html" %}
 
-{% block title %}
-Challenges | CyberLearn CTF
-{% endblock %}
+{% block title %}Challenges Dashboard | CyberLearn CTF{% endblock %}
 
 {% block content %}
+<section class="dashboard-page">
 
-<section class="dashboard">
-
-    <div class="dashboard-heading">
-
-        <div>
-
-            <p class="tag">
-                PARTICIPANT DASHBOARD
+    <!-- Dashboard Header & Stats -->
+    <div class="dashboard-header-panel">
+        <div class="dashboard-welcome">
+            <div class="dashboard-tag">SECURITY QUEST DASHBOARD</div>
+            <h1 class="dashboard-title">Security Quest Operations</h1>
+            <p class="dashboard-subtitle">
+                Welcome back, <strong>{{ session.get('username') }}</strong>. 
+                Complete each operational stage in order to unlock the subsequent investigation task.
             </p>
-
-            <h1>
-                Security Quest
-            </h1>
-
-            <p>
-                Welcome,
-                <strong>
-                    {{ session.get('username') }}
-                </strong>.
-                Complete each stage to unlock the next challenge.
-            </p>
-
         </div>
 
+        <div class="dashboard-progress-card">
+            <div class="progress-top">
+                <span class="progress-title">Overall Quest Progress</span>
+                <span class="progress-ratio"><strong>{{ completed_count }}</strong> / 6 Solved</span>
+            </div>
 
-        <div class="progress-card">
+            <div class="custom-progress-track">
+                <div class="custom-progress-fill" style="width: {{ (completed_count / 6 * 100)|round|int }}%;"></div>
+            </div>
 
-            <span>
-                Overall Progress
-            </span>
-
-            <strong>
-                {{ completed_count }} / 6
-            </strong>
-
-            <progress
-                value="{{ completed_count }}"
-                max="6"
-            >
-            </progress>
-
+            <div class="progress-meta">
+                <span class="progress-pct">{{ (completed_count / 6 * 100)|round|int }}% Complete</span>
+                {% if completed_count == 6 %}
+                    <span class="rank-badge rank-master">Master Operative</span>
+                {% elif completed_count >= 3 %}
+                    <span class="rank-badge rank-analyst">Security Investigator</span>
+                {% else %}
+                    <span class="rank-badge rank-recruit">Security Recruit</span>
+                {% endif %}
+            </div>
         </div>
-
     </div>
 
-
+    <!-- Challenges Grid -->
     <div class="challenge-grid">
-
         {% for challenge in challenges %}
-
-            <article
-                class="
-                    challenge-card
-                    {% if challenge.completed %}
-                        completed-card
-                    {% elif not challenge.unlocked %}
-                        locked-card
-                    {% endif %}
-                "
-            >
-
+            <article class="challenge-card {% if challenge.completed %}completed-card{% elif not challenge.unlocked %}locked-card{% else %}unlocked-card{% endif %}">
+                
                 <div class="challenge-top">
-
-                    <span class="stage">
-                        STAGE {{ "%02d"|format(challenge.id) }}
-                    </span>
+                    <span class="stage-pill">STAGE {{ "%02d"|format(challenge.id) }}</span>
 
                     {% if challenge.completed %}
-
-                        <span class="status completed">
-                            Completed
+                        <span class="status-pill status-completed">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Completed</span>
                         </span>
-
                     {% elif challenge.unlocked %}
-
-                        <span class="status unlocked">
-                            Unlocked
+                        <span class="status-pill status-unlocked">
+                            <span class="pulse-indicator"></span>
+                            <span>Unlocked</span>
                         </span>
-
                     {% else %}
-
-                        <span class="status locked">
-                            Locked
+                        <span class="status-pill status-locked">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            <span>Locked</span>
                         </span>
-
                     {% endif %}
-
                 </div>
 
-
-                <h2>
-                    {{ challenge.title }}
-                </h2>
-
-
-                <p class="domain">
-                    {{ challenge.domain }}
-                </p>
-
-
-                <p class="objective">
-                    {{ challenge.objective }}
-                </p>
-
+                <div class="challenge-body">
+                    <h2 class="challenge-card-title">{{ challenge.title }}</h2>
+                    <div class="challenge-domain-row">
+                        <span class="domain-tag domain-tag-{{ challenge.id }}">{{ challenge.domain }}</span>
+                    </div>
+                    <p class="challenge-objective">{{ challenge.objective }}</p>
+                </div>
 
                 <div class="challenge-bottom">
-
-                    <span class="difficulty">
+                    <span class="difficulty-pill difficulty-{{ challenge.difficulty|lower|replace(' ', '-') }}">
                         {{ challenge.difficulty }}
                     </span>
 
-
                     {% if challenge.completed %}
-
-                        <a
-                            class="btn secondary small"
-                            href="{{ url_for(
-                                'challenge',
-                                stage_id=challenge.id
-                            ) }}"
-                        >
-                            Review
+                        <a class="btn secondary small" href="{{ url_for('challenge', stage_id=challenge.id) }}">
+                            <span>Review</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </a>
-
                     {% elif challenge.unlocked %}
-
-                        <a
-                            class="btn small"
-                            href="{{ url_for(
-                                'challenge',
-                                stage_id=challenge.id
-                            ) }}"
-                        >
-                            Open Stage
+                        <a class="btn small primary-btn" href="{{ url_for('challenge', stage_id=challenge.id) }}">
+                            <span>Open Stage</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </a>
-
                     {% else %}
-
-                        <button
-                            class="btn disabled small"
-                            disabled
-                        >
-                            Locked
+                        <button class="btn disabled small" disabled>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            <span>Locked</span>
                         </button>
-
                     {% endif %}
-
                 </div>
 
             </article>
-
         {% endfor %}
-
     </div>
 
 </section>
-
 {% endblock %}

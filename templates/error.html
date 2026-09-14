@@ -1,32 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %}
-{{ code }} | CyberLearn CTF
-{% endblock %}
+{% block title %}{{ code }} - {{ title }} | CyberLearn CTF{% endblock %}
 
 {% block content %}
-
 <section class="error-page">
+    <div class="error-card">
+        <div class="error-badge">SYSTEM SECURITY EXCEPTION</div>
+        <h1 class="error-code font-mono">{{ code }}</h1>
+        <h2 class="error-title">{{ title }}</h2>
+        <p class="error-message">{{ message }}</p>
 
-    <p class="error-code">
-        {{ code }}
-    </p>
-
-    <h1>
-        {{ title }}
-    </h1>
-
-    <p>
-        {{ message }}
-    </p>
-
-    <a
-        class="btn"
-        href="{{ url_for('home') }}"
-    >
-        Return Home
-    </a>
-
+        <div class="error-actions">
+            {% if session.get('user_id') %}
+                <a class="btn primary-glow" href="{{ url_for('dashboard') }}">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    <span>Return to Dashboard</span>
+                </a>
+            {% else %}
+                <a class="btn primary-glow" href="{{ url_for('home') }}">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Return to Home</span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
 </section>
-
 {% endblock %}

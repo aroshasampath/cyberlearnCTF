@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}Account Settings | CyberLearn CTF{% endblock %}
+
+{% block content %}
+<section class="account-page">
+
+    <!-- Back Navigation -->
+    <a class="back-link" href="{{ url_for('dashboard') }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <span>Back to Challenges Dashboard</span>
+    </a>
+
+    <!-- Account Profile Header -->
+    <div class="account-header-card">
+        <div class="account-profile-main">
+            <div class="profile-avatar-large">
+                <span>{{ (user.username or 'U')[:1]|upper }}</span>
+            </div>
+            <div class="profile-info-block">
+                <div class="profile-tag">PARTICIPANT PROFILE</div>
+                <h1 class="profile-username">{{ user.username }}</h1>
+                <p class="profile-email">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <span>{{ user.email }}</span>
+                </p>
+                <p class="profile-joined">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>Member since: {{ user.created_at[:10] if user.created_at else 'Active' }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="account-quest-stats">
+            <div class="stats-label">Quest Completion</div>
+            <div class="stats-counter">
+                <strong>{{ completed_count }}</strong>
+                <span>/ 6 Stages</span>
+            </div>
+            <div class="stats-progress-bar">
+                <div class="stats-progress-fill" style="width: {{ (completed_count / 6 * 100)|round|int }}%;"></div>
+            </div>
+            <div class="stats-footer-note">
+                {% if completed_count == 6 %}
+                    <span class="badge-solved">✓ Quest Completed! Master Status</span>
+                {% elif completed_count > 0 %}
+                    <span class="badge-progress">{{ 6 - completed_count }} stages remaining</span>
+                {% else %}
+                    <span class="badge-start">Ready to begin Stage 01</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Grid -->
+    <div class="account-settings-grid">
+
+        <!-- 1. Edit Profile Details -->
+        <article class="settings-card">
+            <div class="settings-card-header">
+                <div class="settings-card-icon primary-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <div>
+                    <h2>Profile Information</h2>
+                    <p>Update your username and contact email address.</p>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('account') }}" class="settings-form">
+                {{ profile_form.hidden_tag() }}
+
+                <div class="form-group">
+                    {{ profile_form.username.label(class="form-label") }}
+                    {{ profile_form.username(class="form-control", placeholder="e.g. shadow_hunter", autocomplete="username") }}
+                    <span class="form-hint">Only letters, numbers, underscores and hyphens (3-30 chars).</span>
+                    {% for error in profile_form.username.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ profile_form.email.label(class="form-label") }}
+                    {{ profile_form.email(class="form-control", placeholder="you@example.com", autocomplete="email") }}
+                    <span class="form-hint">Must be a valid email format.</span>
+                    {% for error in profile_form.email.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                        <span>Save Profile Changes</span>
+                    </button>
+                </div>
+            </form>
+        </article>
+
+        <!-- 2. Change Password -->
+        <article class="settings-card">
+            <div class="settings-card-header">
+                <div class="settings-card-icon warning-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+                <div>
+                    <h2>Change Password</h2>
+                    <p>Ensure your account remains safe with a strong passphrase.</p>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('change_password') }}" class="settings-form">
+                {{ password_form.hidden_tag() }}
+
+                <div class="form-group">
+                    {{ password_form.current_password.label(class="form-label") }}
+                    {{ password_form.current_password(class="form-control", placeholder="Enter current password", autocomplete="current-password") }}
+                    {% for error in password_form.current_password.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ password_form.new_password.label(class="form-label") }}
+                    {{ password_form.new_password(class="form-control", placeholder="Minimum 10 characters", autocomplete="new-password") }}
+                    <span class="form-hint">At least 10 characters with at least one letter and one number.</span>
+                    {% for error in password_form.new_password.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ password_form.confirm_new_password.label(class="form-label") }}
+                    {{ password_form.confirm_new_password(class="form-control", placeholder="Repeat new password", autocomplete="new-password") }}
+                    {% for error in password_form.confirm_new_password.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Update Password</span>
+                    </button>
+                </div>
+            </form>
+        </article>
+
+    </div>
+
+    <!-- 3. Danger Zone / Delete Account -->
+    <article class="danger-zone-card">
+        <div class="danger-zone-header">
+            <div class="danger-zone-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            </div>
+            <div>
+                <h2>Danger Zone: Delete Account</h2>
+                <p>Permanently remove your participant profile and wipe all completed CTF stage progress.</p>
+            </div>
+        </div>
+
+        <div class="danger-zone-body">
+            <div class="danger-alert-box">
+                <strong>Warning: This action is permanent and cannot be undone.</strong>
+                <p>Deleting your account will immediately remove your credentials, unlocked challenges, and submitted flag history from the CyberLearn CTF platform.</p>
+            </div>
+
+            <details class="danger-accordion">
+                <summary class="danger-trigger-btn">
+                    <span>I understand the consequences, delete my account</span>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </summary>
+
+                <div class="danger-form-wrapper">
+                    <form method="POST" action="{{ url_for('delete_account') }}" class="settings-form">
+                        {{ delete_form.hidden_tag() }}
+
+                        <div class="form-group">
+                            {{ delete_form.password.label(class="form-label") }}
+                            {{ delete_form.password(class="form-control", placeholder="Enter your current password to authorize") }}
+                            {% for error in delete_form.password.errors %}
+                                <p class="field-error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ delete_form.confirm_phrase.label(class="form-label") }}
+                            {{ delete_form.confirm_phrase(class="form-control font-mono", placeholder="DELETE") }}
+                            <span class="form-hint">Type the word <strong>DELETE</strong> in all uppercase to confirm.</span>
+                            {% for error in delete_form.confirm_phrase.errors %}
+                                <p class="field-error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn danger full">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                <span>Permanently Delete My Account</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </details>
+        </div>
+    </article>
+
+</section>
+{% endblock %}

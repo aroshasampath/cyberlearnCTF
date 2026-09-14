@@ -23,7 +23,13 @@ from flask_limiter.util import get_remote_address
 from flask_wtf.csrf import CSRFError, CSRFProtect
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from forms import LoginForm, RegistrationForm
+from forms import (
+    ChangePasswordForm,
+    DeleteAccountForm,
+    LoginForm,
+    RegistrationForm,
+    UpdateProfileForm,
+)
 
 
 # =========================================================
@@ -1087,8 +1093,223 @@ def dashboard():
 
 
 # =========================================================
+# USER ACCOUNT MANAGEMENT
+# =========================================================
+
+@app.route(
+    "/account",
+    methods=[
+        "GET",
+        "POST",
+    ],
+)
+@login_required
+def account():
+
+    user_id = session["user_id"]
+    connection = get_db_connection()
+
+    user = connection.execute(
+        """
+        SELECT id, username, email, created_at
+        FROM users
+        WHERE id = ?
+        """,
+        (user_id,),
+    ).fetchone()
+
+    if user is None:
+        connection.close()
+        session.clear()
+        flash("User session expired. Please log in again.", "error")
+        return redirect(url_for("login"))
+
+    completed = get_completed_stages(user_id)
+    profile_form = UpdateProfileForm()
+    password_form = ChangePasswordForm()
+    delete_form = DeleteAccountForm()
+
+    if request.method == "POST" and profile_form.validate_on_submit():
+        new_username = (
+            profile_form.username.data
+            .strip()
+            .casefold()
+        )
+        new_email = (
+            profile_form.email.data
+            .strip()
+            .lower()
+        )
+
+        conflict = connection.execute(
+            """
+            SELECT id, username, email
+            FROM users
+            WHERE (username = ? OR email = ?)
+              AND id != ?
+            """,
+            (new_username, new_email, user_id),
+        ).fetchone()
+
+        if conflict:
+            connection.close()
+            if conflict["username"] == new_username:
+                flash("This username is already taken by another participant.", "error")
+            else:
+                flash("This email address is already in use by another participant.", "error")
+            return render_template(
+                "account.html",
+                user=user,
+                profile_form=profile_form,
+                password_form=password_form,
+                delete_form=delete_form,
+                completed_count=len(completed),
+            )
+
+        connection.execute(
+            """
+            UPDATE users
+            SET username = ?,
+                email = ?
+            WHERE id = ?
+            """,
+            (new_username, new_email, user_id),
+        )
+        connection.commit()
+        connection.close()
+
+        session["username"] = new_username
+        flash("Your profile details have been successfully updated.", "success")
+        return redirect(url_for("account"))
+
+    if request.method == "GET":
+        profile_form.username.data = user["username"]
+        profile_form.email.data = user["email"]
+
+    connection.close()
+
+    return render_template(
+        "account.html",
+        user=user,
+        profile_form=profile_form,
+        password_form=password_form,
+        delete_form=delete_form,
+        completed_count=len(completed),
+    )
+
+
+@app.route(
+    "/account/password",
+    methods=["POST"],
+)
+@login_required
+@limiter.limit("6 per minute")
+def change_password():
+
+    user_id = session["user_id"]
+    password_form = ChangePasswordForm()
+
+    if password_form.validate_on_submit():
+        connection = get_db_connection()
+        user = connection.execute(
+            """
+            SELECT password_hash
+            FROM users
+            WHERE id = ?
+            """,
+            (user_id,),
+        ).fetchone()
+
+        if not user or not check_password_hash(
+            user["password_hash"],
+            password_form.current_password.data,
+        ):
+            connection.close()
+            flash("The current password you entered is incorrect.", "error")
+            return redirect(url_for("account"))
+
+        new_hash = generate_password_hash(password_form.new_password.data)
+        connection.execute(
+            """
+            UPDATE users
+            SET password_hash = ?
+            WHERE id = ?
+            """,
+            (new_hash, user_id),
+        )
+        connection.commit()
+        connection.close()
+
+        flash("Your password has been changed successfully.", "success")
+        return redirect(url_for("account"))
+
+    for field, errors in password_form.errors.items():
+        for error in errors:
+            flash(error, "error")
+
+    return redirect(url_for("account"))
+
+
+@app.route(
+    "/account/delete",
+    methods=["POST"],
+)
+@login_required
+@limiter.limit("3 per minute")
+def delete_account():
+
+    user_id = session["user_id"]
+    delete_form = DeleteAccountForm()
+
+    if delete_form.validate_on_submit():
+        confirm_phrase = delete_form.confirm_phrase.data.strip()
+        if confirm_phrase != "DELETE":
+            flash("Confirmation failed: You must type DELETE in all uppercase.", "error")
+            return redirect(url_for("account"))
+
+        connection = get_db_connection()
+        user = connection.execute(
+            """
+            SELECT password_hash
+            FROM users
+            WHERE id = ?
+            """,
+            (user_id,),
+        ).fetchone()
+
+        if not user or not check_password_hash(
+            user["password_hash"],
+            delete_form.password.data,
+        ):
+            connection.close()
+            flash("Incorrect password. Account deletion was aborted.", "error")
+            return redirect(url_for("account"))
+
+        connection.execute(
+            """
+            DELETE FROM users
+            WHERE id = ?
+            """,
+            (user_id,),
+        )
+        connection.commit()
+        connection.close()
+
+        session.clear()
+        flash("Your account and all associated CTF progress have been permanently deleted.", "success")
+        return redirect(url_for("home"))
+
+    for field, errors in delete_form.errors.items():
+        for error in errors:
+            flash(error, "error")
+
+    return redirect(url_for("account"))
+
+
+# =========================================================
 # CHALLENGE PAGE
 # =========================================================
+
 
 @app.route(
     "/challenge/<int:stage_id>"
