@@ -164,7 +164,74 @@
                 </details>
                 <details class="hint-accordion">
                     <summary><span>Hint 3: Inner Cipher</span><svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
-                    <div class="hint-body"><p>After Base64 decoding, the message is still protected with a Caesar cipher using a shift of 5.</p></div>
+                    <div class="hint-body">
+                        <p>After Base64 decoding, the message is still protected with a Caesar cipher using a shift of 5.</p>
+                        <div class="hint-code-container" style="margin-top: 14px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--code-bg);">
+                            <div class="hint-code-header" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--surface-soft); border-bottom: 1px solid var(--border);">
+                                <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); font-family: monospace;">python3</span>
+                                <button type="button" class="btn-copy-code" onclick="copyStage3Hint(this)" style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; font-size: 0.78rem; font-weight: 600; color: var(--primary); background: var(--surface); border: 1px solid var(--border-glow); border-radius: 6px; cursor: pointer; transition: all 0.2s ease;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    <span>Copy Code</span>
+                                </button>
+                            </div>
+                            <pre style="margin: 0; padding: 14px 16px; overflow-x: auto; background: var(--code-bg); color: var(--code-color); font-size: 0.86rem; line-height: 1.55; font-family: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;"><code id="stage3-hint-code">python3 - &lt;&lt;'PY'
+text = open('caesar.txt', encoding='utf-8').read()
+out = []
+
+for ch in text:
+    if 'a' &lt;= ch &lt;= 'z':
+        out.append(chr((ord(ch) - ord('a') - 5) % 26 + ord('a')))
+    elif 'A' &lt;= ch &lt;= 'Z':
+        out.append(chr((ord(ch) - ord('A') - 5) % 26 + ord('A')))
+    else:
+        out.append(ch)
+
+print(''.join(out))
+PY</code></pre>
+                        </div>
+                        <script>
+                        function copyStage3Hint(btn) {
+                            var codeEl = document.getElementById('stage3-hint-code');
+                            if (!codeEl) return;
+                            var text = codeEl.innerText || codeEl.textContent || '';
+                            function onCopied() {
+                                var span = btn.querySelector('span');
+                                if (span) span.textContent = 'Copied!';
+                                btn.style.borderColor = 'var(--success, #34d399)';
+                                btn.style.color = 'var(--success, #34d399)';
+                                setTimeout(function() {
+                                    if (span) span.textContent = 'Copy Code';
+                                    btn.style.borderColor = 'var(--border-glow)';
+                                    btn.style.color = 'var(--primary)';
+                                }, 2000);
+                            }
+                            if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+                                navigator.clipboard.writeText(text).then(onCopied).catch(function() {
+                                    fallbackCopy(text);
+                                });
+                            } else {
+                                fallbackCopy(text);
+                            }
+                            function fallbackCopy(val) {
+                                var ta = document.createElement('textarea');
+                                ta.value = val;
+                                ta.style.position = 'fixed';
+                                ta.style.left = '-9999px';
+                                ta.style.top = '-9999px';
+                                document.body.appendChild(ta);
+                                ta.focus();
+                                ta.select();
+                                try {
+                                    document.execCommand('copy');
+                                    onCopied();
+                                } catch (e) {
+                                    console.error('Copy failed', e);
+                                }
+                                document.body.removeChild(ta);
+                            }
+                        }
+                        </script>
+                    </div>
                 </details>
             </div>
 
