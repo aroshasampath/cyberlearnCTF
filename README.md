@@ -1,4 +1,4 @@
-# CyberLearn CTF — Group 18 Security Quest
+# CyberLearn CTF — Group 17 Security Quest
 
 A progressive educational Capture The Flag (CTF) platform developed for the **IE3132 Penetration Testing** module at the **Sri Lanka Institute of Information Technology (SLIIT)**.
 
@@ -25,7 +25,7 @@ Each successful challenge requires the participant to:
 The standard flag format used throughout the CTF is:
 
 ```text
-GROUP18{challenge_specific_value}
+GROUP17{challenge_specific_value}
 ```
 
 Actual challenge flags are intentionally excluded from this README.
@@ -466,12 +466,12 @@ Or create a `.env` file manually:
 SECRET_KEY=generate_a_random_hex_key_here
 FLAG_PEPPER=generate_another_random_hex_pepper_here
 
-STAGE1_FLAG=GROUP18{hidden_metadata_found}
-STAGE2_FLAG=GROUP18{client_side_gate_broken}
-STAGE3_FLAG=GROUP18{double_layer_decoded}
-STAGE4_FLAG=GROUP18{digital_footprints_traced}
-STAGE5_FLAG=GROUP18{traffic_stream_identified}
-STAGE6_FLAG=GROUP18{root_of_the_problem}
+STAGE1_FLAG=GROUP17{hidden_metadata_found}
+STAGE2_FLAG=GROUP17{client_side_gate_broken}
+STAGE3_FLAG=GROUP17{double_layer_decoded}
+STAGE4_FLAG=GROUP17{digital_footprints_traced}
+STAGE5_FLAG=GROUP17{traffic_stream_identified}
+STAGE6_FLAG=GROUP17{root_of_the_problem}
 ```
 
 > **Security Note:** The `.env` file is excluded from Git version control via `.gitignore`.
@@ -564,7 +564,7 @@ Institution    : Sri Lanka Institute of Information Technology (SLIIT)
 Faculty        : Faculty of Computing
 Module         : IE3132 - Penetration Testing
 Project        : Capture The Flag (CTF) Play Box Implementation
-Group          : Group 18
+Group          : Group 17
 Platform Name  : CyberLearn CTF
 Academic Year  : 2026
 ```

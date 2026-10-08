@@ -110,7 +110,7 @@ draw.text(
 
 draw.text(
     (125, 350),
-    "Group 18 Security Quest",
+    "Group 17 Security Quest",
     font=subtitle_font,
     fill=(240, 245, 250)
 )

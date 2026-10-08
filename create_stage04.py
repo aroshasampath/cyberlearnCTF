@@ -134,7 +134,7 @@ Investigators should follow the evidence trail rather than
 assuming that every file is relevant.
 
 Flag Format:
-GROUP18{...}
+GROUP17{...}
 """.strip()
 
 
