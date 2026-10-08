@@ -23,6 +23,13 @@
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         <span>Solved</span>
                     </span>
+                    <form method="POST" action="{{ url_for('reset_stage', stage_id=challenge.id) }}" class="card-reset-form" onsubmit="return confirm('Are you sure you want to reset Stage {{ '%02d'|format(challenge.id) }}? Your solved status will be cleared so you can attempt it again.');">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="card-reset-btn" style="padding: 4px 10px; font-size: 0.78rem;" title="Reset Stage {{ '%02d'|format(challenge.id) }}">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            <span>Reset</span>
+                        </button>
+                    </form>
                 {% else %}
                     <span class="status-pill status-unlocked">
                         <span class="pulse-indicator"></span>
@@ -346,10 +353,19 @@ PY</code></pre>
                 <h2>Stage Completed Successfully</h2>
                 <p>Your flag has been validated and recorded. You have unlocked access to the next stage in your dashboard.</p>
             </div>
-            <a class="btn primary-btn" href="{{ url_for('dashboard') }}">
-                <span>Return to Dashboard</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </a>
+            <div class="completed-actions">
+                <form method="POST" action="{{ url_for('reset_stage', stage_id=challenge.id) }}" onsubmit="return confirm('Are you sure you want to reset Stage {{ '%02d'|format(challenge.id) }}? Your solved status will be cleared so you can attempt it again.');">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn-action-reset" title="Reset Stage {{ '%02d'|format(challenge.id) }}">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                        <span>Reset Stage</span>
+                    </button>
+                </form>
+                <a class="btn primary-btn" href="{{ url_for('dashboard') }}">
+                    <span>Return to Dashboard</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+            </div>
         </div>
     {% else %}
         <div class="flag-card">

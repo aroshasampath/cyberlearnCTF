@@ -2139,6 +2139,84 @@ def submit_flag(
 
 
 # =========================================================
+# RESET STAGE PROGRESS
+# =========================================================
+
+@app.route(
+    "/challenge/<int:stage_id>/reset",
+    methods=[
+        "POST"
+    ],
+)
+@login_required
+@limiter.limit(
+    "20 per minute"
+)
+def reset_stage(
+    stage_id
+):
+    challenge_data = (
+        get_challenge(
+            stage_id
+        )
+    )
+
+    if challenge_data is None:
+        abort(404)
+
+    user_id = (
+        session[
+            "user_id"
+        ]
+    )
+
+    if not stage_is_unlocked(
+        user_id,
+        stage_id,
+    ):
+        abort(403)
+
+    connection = (
+        get_db_connection()
+    )
+
+    connection.execute(
+        """
+        DELETE FROM progress
+        WHERE user_id = ?
+          AND stage_id = ?
+        """,
+        (
+            user_id,
+            stage_id,
+        ),
+    )
+
+    connection.commit()
+    connection.close()
+
+    flash(
+        f"Stage {stage_id:02d} progress has been reset. You can now re-attempt the mission and submit the flag.",
+        "success",
+    )
+
+    referrer = request.referrer
+    if referrer and ("dashboard" in referrer):
+        return redirect(
+            url_for(
+                "dashboard"
+            )
+        )
+
+    return redirect(
+        url_for(
+            "challenge",
+            stage_id=stage_id,
+        )
+    )
+
+
+# =========================================================
 # CSRF ERROR
 # =========================================================
 

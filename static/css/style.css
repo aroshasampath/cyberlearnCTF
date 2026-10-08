@@ -1097,6 +1097,53 @@ button {
 .difficulty-moderate-hard,
 .difficulty-hard { background: var(--danger-bg); color: var(--danger); }
 
+/* Card Actions Group & Reset Button */
+.card-btn-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.card-reset-form {
+    margin: 0;
+    display: inline-flex;
+}
+
+.card-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 11px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    border-radius: 7px;
+    background: var(--surface-soft);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    text-decoration: none;
+    line-height: 1.2;
+}
+
+.card-reset-btn:hover {
+    background: var(--surface-hover);
+    border-color: var(--warning);
+    color: var(--warning);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.18);
+}
+
+.card-reset-btn svg {
+    transition: transform 0.25s ease;
+}
+
+.card-reset-btn:hover svg {
+    transform: rotate(-60deg);
+}
+
 /* =========================================================
    9. CHALLENGE DETAILS PAGE
    ========================================================= */
@@ -1429,6 +1476,69 @@ button {
 .completed-text p {
     font-size: 0.95rem;
     color: var(--text-soft);
+}
+
+.completed-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: nowrap;
+    margin-left: auto;
+}
+
+.completed-actions form {
+    margin: 0;
+    display: inline-flex;
+}
+
+.btn-action-reset {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 9px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background: var(--surface);
+    color: var(--text-soft);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+.btn-action-reset:hover {
+    background: var(--surface-hover);
+    border-color: var(--warning);
+    color: var(--warning);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(251, 191, 36, 0.2);
+}
+
+.btn-action-reset svg {
+    transition: transform 0.25s ease;
+}
+
+.btn-action-reset:hover svg {
+    transform: rotate(-60deg);
+}
+
+@media (max-width: 680px) {
+    .completed-actions {
+        width: 100%;
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+    .completed-actions > *,
+    .completed-actions form,
+    .completed-actions .btn,
+    .completed-actions .btn-action-reset {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
 }
 
 /* =========================================================
